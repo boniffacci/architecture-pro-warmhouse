@@ -1,0 +1,68 @@
+openapi: 3.0.3
+info:
+  title: Telemetry Service API
+  version: 1.0.0
+  description: Микросервис сбора и получения телеметрических данных
+
+paths:
+  /telemetry:
+    post:
+      summary: Отправить телеметрию
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                device_id:
+                  type: string
+                metric:
+                  type: string
+                value:
+                  type: number
+              required: [device_id, metric, value]
+      responses:
+        '201':
+          description: Телеметрия принята
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      device_id:
+                        type: string
+                      metric:
+                        type: string
+                      value:
+                        type: number
+                      timestamp:
+                        type: string
+                        format: date-time
+
+    get:
+      summary: Получить все телеметрические данные
+      responses:
+        '200':
+          description: Успешный ответ с телеметрией
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    device_id:
+                      type: string
+                    metric:
+                      type: string
+                    value:
+                      type: number
+                    timestamp:
+                      type: string
+                      format: date-time

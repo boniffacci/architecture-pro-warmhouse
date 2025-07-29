@@ -1,0 +1,86 @@
+openapi: 3.0.3
+info:
+  title: Smart Home Scenario Engine API
+  version: 1.0.0
+  description: API для управления сценариями автоматизации умного дома
+
+paths:
+  /automations:
+    get:
+      tags: [Automations]
+      summary: Получить список сценариев пользователя
+      responses:
+        '200':
+          description: Список сценариев
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Scenario'
+
+    post:
+      tags: [Automations]
+      summary: Создать новый сценарий
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScenarioCreateRequest'
+      responses:
+        '201':
+          description: Сценарий создан
+
+  /automations/{id}/run:
+    post:
+      tags: [Automations]
+      summary: Запустить сценарий вручную
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Сценарий запущен
+
+components:
+  schemas:
+    Scenario:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        trigger:
+          type: string
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScenarioAction'
+      required: [id, name, trigger, actions]
+
+    ScenarioAction:
+      type: object
+      properties:
+        deviceId:
+          type: string
+        command:
+          type: string
+      required: [deviceId, command]
+
+    ScenarioCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        trigger:
+          type: string
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScenarioAction'
+      required: [name, trigger, actions]

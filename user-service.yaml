@@ -1,0 +1,57 @@
+openapi: 3.0.3
+info:
+  title: Smart Home User Service API
+  version: 1.0.0
+  description: API для регистрации и аутентификации пользователей
+
+paths:
+  /auth/register:
+    post:
+      tags: [User]
+      summary: Регистрация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequest'
+      responses:
+        '201':
+          description: Пользователь зарегистрирован
+
+  /auth/login:
+    post:
+      tags: [User]
+      summary: Аутентификация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+      responses:
+        '200':
+          description: Успешный вход
+
+components:
+  schemas:
+    UserRegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+      required: [email, password]
+
+    UserLoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required: [email, password]
