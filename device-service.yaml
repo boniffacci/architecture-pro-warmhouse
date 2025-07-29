@@ -1,0 +1,85 @@
+openapi: 3.0.3
+info:
+  title: Device Service API
+  version: 1.0.0
+  description: Микросервис управления устройствами
+
+paths:
+  /devices/{deviceId}:
+    post:
+      summary: Создать устройство
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Устройство создано
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Ошибка запроса
+
+    get:
+      summary: Получить статус устройства
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Статус устройства
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  device_id:
+                    type: string
+                  status:
+                    type: string
+        '404':
+          description: Устройство не найдено
+
+  /devices/{deviceId}/status:
+    patch:
+      summary: Обновить статус устройства
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+      responses:
+        '200':
+          description: Статус обновлён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  device_id:
+                    type: string
+                  status:
+                    type: string
+        '404':
+          description: Устройство не найдено
+
